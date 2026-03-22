@@ -39,7 +39,7 @@ argument-hint: "FetchXML=FetchXMLQuery"
 ### 输出:
 
 ```csharp
-    var entityLogicName = "account";
+     var entityLogicName = "account";
      var fetchXml = new FetchXmlBuilder()
                         .Entity(entityLogicName)
                         .Filter(new FilterBuilder("and")
