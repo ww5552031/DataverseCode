@@ -139,14 +139,14 @@ public static class FetchOperatorExtensions
 
 public class FetchXmlBuilder
 {
-    private string _entityName;
+    private string _entityName=string.Empty;
     private List<string> _attributes = new List<string>();
     private List<FilterBuilder> _filters = new List<FilterBuilder>();
     private List<LinkEntityBuilder> _linkEntities = new List<LinkEntityBuilder>();
     private List<OrderByBuilder> _orderBys = new List<OrderByBuilder>();
     private int? _top = null;
     private int? _page = null;
-    private string _pagingCookie = null;
+    private string _pagingCookie = null!;
     private int? _count = null;
     private bool _aggregate = false;
 
@@ -190,7 +190,7 @@ public class FetchXmlBuilder
     /// 删除了两参数版本，保留带 dategrouping 的版本以避免重载歧义
     /// </summary>
     /// <param name="attribute"></param>
-    /// <param name="alias"></param>
+    /// <param name="alias">别名</param>
     /// <returns></returns>
     public FetchXmlBuilder SelectGroupBy(string attribute, string alias = null)
     {
@@ -205,8 +205,8 @@ public class FetchXmlBuilder
     /// 新增：支持 groupby + dategrouping 的 SelectGroupBy
     /// </summary>
     /// <param name="attribute"></param>
-    /// <param name="alias"></param>
-    /// <param name="dateGrouping"></param>
+    /// <param name="alias">别名</param>
+    /// <param name="dateGrouping">日期分组</param>
     /// <returns></returns>
     public FetchXmlBuilder SelectGroupBy(string attribute, string alias = null, string dateGrouping = null)
     {
@@ -433,9 +433,9 @@ public class LinkEntityBuilder
      /// <summary>
      /// 新增：支持 groupby + dategrouping 的 SelectGroupBy
      /// </summary>
-     /// <param name="attribute"></param>
-     /// <param name="alias"></param>
-     /// <param name="dateGrouping"></param>
+     /// <param name="attribute">属性名称</param>
+     /// <param name="alias">别名</param>
+     /// <param name="dateGrouping">日期分组</param>
      /// <returns></returns>
     public LinkEntityBuilder SelectGroupBy(string attribute, string alias = null, string dateGrouping = null)
     {
