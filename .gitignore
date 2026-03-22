@@ -3,6 +3,9 @@
 /train.testproj/bin
 /train.dataverse.comm/obj
 /train.dataverse.comm/bin
+/WebResource/obj
 /.vscode
 /.vs
 appsettings.json
+appsettings.Development.json
+*.csproj.user

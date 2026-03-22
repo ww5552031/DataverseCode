@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "train.dataverse.comm", "tra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "train.testproj", "train.testproj\train.testproj.csproj", "{C6909E35-B754-49D5-A160-481451094701}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebResource", "WebResource\WebResource.csproj", "{4023B863-B76A-42D5-A486-3783FD2F88B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{C6909E35-B754-49D5-A160-481451094701}.Release|x64.Build.0 = Release|Any CPU
 		{C6909E35-B754-49D5-A160-481451094701}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6909E35-B754-49D5-A160-481451094701}.Release|x86.Build.0 = Release|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Release|x64.Build.0 = Release|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{4023B863-B76A-42D5-A486-3783FD2F88B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
