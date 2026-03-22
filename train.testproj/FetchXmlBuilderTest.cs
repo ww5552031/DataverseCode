@@ -46,6 +46,68 @@ public sealed class FetchXmlBuilderTest
     }
 
     [TestMethod]
+    public async Task AccountRepository_OrConditionTest()
+    {
+        var entityLogicName = "account";
+        var attributes = new string[] { "name", "address1_city" };
+
+        var fetchXml = new FetchXmlBuilder()
+            .Entity(entityLogicName)
+            .Select(attributes)
+            .Filter(new FilterBuilder("or")
+                .Condition("address1_city", FetchOperator.Equal, "Redmond")
+                .Condition("address1_city", FetchOperator.Equal, "Seattle")
+                .Condition("address1_city", FetchOperator.Equal, "Bellevue"))
+            .Build();
+
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+        Assert.IsTrue(entityCollection.Entities.Count == 0);
+    }
+
+    [TestMethod]
+    public async Task Build_LinkEntity_WithNullCondition()
+    {
+        var entityLogicName = "contact";
+        var attributes = new string[] { "fullname" };
+        var linkedEntityName = "account";
+
+        var fetchXml = new FetchXmlBuilder()
+            .Entity(entityLogicName)
+                .Select(attributes)
+                .Filter(new FilterBuilder("and")
+                .Condition("a", "fax", FetchOperator.Null))
+                .LinkEntity(new LinkEntityBuilder(linkedEntityName, "accountid", "parentcustomerid", "a", LinkType.Outer))
+            .Build();
+
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+        Assert.IsTrue(entityCollection.Entities.Count > 0);
+    }
+
+    [TestMethod]
+    public async Task AccountRepository_AndConditionInTest()
+    {
+        var entityLogicName = "account";
+        var attributes = new string[] { "name", "address1_city" };
+        var cities = new string[] { "Redmond", "Seattle", "Bellevue" };
+
+        var fetchXml = new FetchXmlBuilder()
+                            .Entity(entityLogicName)
+                            .Select(attributes)
+                            .Filter(new FilterBuilder("and")
+                                .Condition("address1_city", FetchOperator.In, cities))
+                            .Build();
+                            
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);                   
+        Assert.IsNotNull(entityCollection);
+        Assert.IsTrue(entityCollection.Entities.Count == 0);
+    }
+
+    [TestMethod]
     public async Task AccountRepository_PageByPageTest()
     {
         if (service == null){

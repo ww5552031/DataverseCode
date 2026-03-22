@@ -356,7 +356,13 @@ public class FilterBuilder
         return Condition(attribute, op, values.ToArray());
     }
 
-
+    /// <summary>
+    /// obsolete弃用，新增了支持枚举参数的重载方法
+    /// </summary>
+    /// <param name="attribute"></param>
+    /// <param name="op"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public FilterBuilder Condition(string attribute, string op, string value)
     {
         _conditions.Add($"<condition attribute='{attribute}' operator='{op}' value='{value}' />");

@@ -6,10 +6,15 @@ model: GPT-5 mini (copilot)
 argument-hint: "FetchXML=FetchXMLQuery"
 ---
 ## 任务描述
-   1. 必须阅读 [FetchXmlBuilder](../../train.dataverse.comm/FetchXmlBuilder.cs)。
-   2. 基于上一步使用FetchXmlBuilder构建查询代码,
-   3. 不能修改 FetchXmlBuilder类。
-   4. 使用 #tool:search 工具查找项目中的类 FetchXMLBuilder Class。
+   1. 首先使用#tool:search找到 [FetchXmlBuilder](../../train.dataverse.comm/FetchXmlBuilder.cs)。
+   2. 根据用户输入的FetchXML查询字符串，使用FetchXmlBuilder构建查询代码。
+   3. 基于上一步使用FetchXmlBuilder构建查询代码,
+  ### 注意事项
+   - 如果如果FetchXmlBuilder 已经有枚举参数重载，优先使用枚举参数重载。
+   - 如果FetchXmlBuilder类无法满足某些FetchXML查询的构建需求，只需要请告知用户。
+   - 处理不同类型的FetchXML查询，包括基本查询、分页查询、链接实体查询和聚合查询。
+   - 输出的代码应该是的能执行单元测试C#代码片段。单元测试框架只能是MSTest。
+  
    
 
 ## 输入参数
@@ -38,7 +43,7 @@ argument-hint: "FetchXML=FetchXMLQuery"
      var fetchXml = new FetchXmlBuilder()
                         .Entity(entityLogicName)
                         .Filter(new FilterBuilder("and")
-                        .Condition("statecode", "eq", stateCode.ToString()))
+                        .Condition("statecode", FetchOperator.Equal, stateCode.ToString()))
                         .Top(10).Build();
 ```
 
