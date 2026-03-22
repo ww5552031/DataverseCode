@@ -1,0 +1,7 @@
+# 忽略构建输出
+/train.testproj/obj
+/train.testproj/bin
+/train.dataverse.comm/obj
+/train.dataverse.comm/bin
+/.vscode
+appsettings.json
