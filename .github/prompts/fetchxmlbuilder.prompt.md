@@ -13,9 +13,34 @@ argument-hint: "FetchXML=FetchXMLQuery"
    - 如果如果FetchXmlBuilder 已经有枚举参数重载，优先使用枚举参数重载。
    - 如果FetchXmlBuilder类无法满足某些FetchXML查询的构建需求，只需要请告知用户。
    - 处理不同类型的FetchXML查询，包括基本查询、分页查询、链接实体查询和聚合查询。
-   - 输出的代码应该是的能执行单元测试C#代码片段。单元测试框架只能是MSTest。
-  
-   
+   - 输出的Csharp代码应该是的单元测试完整方法。单元测试框架只能是MSTest。
+      #### MSTest示例
+      ```csharp
+            [TestMethod]
+            public async Task Build_FetchXml_With_ValueOf_And_LinkEntity_Should_Be_Correct()
+            {
+                var entityLogicName = "contact";
+                var attributes = new string[] { "contactid", "fullname" };
+
+                var filter = new FilterBuilder("and")
+                                .ConditionValueOf("fullname", FetchOperator.NotEqual, "acct.name");
+
+                var link = new LinkEntityBuilder("account", "accountid", "parentcustomerid", "acct", LinkType.Outer)
+                                .Select("name");
+
+                var fetchXml = new FetchXmlBuilder()
+                                    .Entity(entityLogicName)
+                                    .Select(attributes)
+                                    .Filter(filter)
+                                    .LinkEntity(link)
+                                    .Build();
+
+                var fetchExpression = new FetchExpression(fetchXml);
+                var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+                Assert.IsNotNull(entityCollection);
+                Assert.IsTrue(entityCollection.Entities.Count == 13);
+            } 
+        ```
 
 ## 输入参数
 - FetchXML查询字符串: ${input:FetchXML:请输入FetchXML查询字符串}
@@ -160,6 +185,29 @@ argument-hint: "FetchXML=FetchXMLQuery"
                 .SelectGroupBy("createdon", "FiscalYear", "fiscal-year")
                 .OrderByAlias("Month")
             .Build();
+```
+
+## 同一行中对列值进行筛选示例
+### 输入:
+```xml
+<fetch>
+<entity name='contact' >
+<attribute name='firstname' />
+<filter>
+<condition attribute='firstname' operator='eq' valueof='lastname' />
+</filter>
+</entity>
+</fetch>
+```
+### 输出:
+```csharp
+    var entityLogicName = "contact";
+    var fetchXml = new FetchXmlBuilder()
+        .Entity(entityLogicName)
+            .Select("firstname")
+            .Filter(new FilterBuilder()
+                .Condition("firstname", FetchOperator.Equal, "lastname", true))
+        .Build();
 ```
 
 ## FetchXMLBuilder Class

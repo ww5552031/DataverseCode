@@ -25,12 +25,114 @@ public sealed class FetchXmlBuilderTest
     }
 
     [TestMethod]
+    public async Task Build_FetchXml_NotAny_LinkEntity_In_Filter_Should_Be_Correct()
+    {
+        var entityLogicName = "contact";
+        var attributes = new string[] { "fullname" };
+    
+        var linkedEntityName = "account";
+        var link = new LinkEntityBuilder(linkedEntityName, "primarycontactid", "contactid", "acct", LinkType.NotAny)
+                        .Filter(new FilterBuilder("and")
+                            .Condition("name", FetchOperator.NotNull));
+    
+        var fetchXml = new FetchXmlBuilder()
+                            .Entity(entityLogicName)
+                            .Select(attributes)
+                            .Filter(new FilterBuilder("and")
+                                .LinkEntity(link))
+                            .Build();
+    
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+    }
+
+    [TestMethod]
+    public async Task Build_FetchXml_LinkEntity_In_Filter_Should_Be_Correct()
+    {
+        var entityLogicName = "contact";
+        var attributes = new string[] { "fullname" };
+    
+        var accountLinkFilter = new FilterBuilder("and")
+            .Condition("name", FetchOperator.NotNull);
+    
+        var accountLink = new LinkEntityBuilder("account", "primarycontactid", "contactid", null, LinkType.Any)
+            .Filter(accountLinkFilter);
+    
+        var fetchXml = new FetchXmlBuilder()
+            .Entity(entityLogicName)
+                .Select(attributes)
+                .Filter(new FilterBuilder("or").LinkEntity(accountLink)
+                .Condition("statecode", FetchOperator.Equal, "1"))
+            .Build();
+    
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+        Assert.IsTrue(entityCollection.Entities.Count == 10);
+    }
+
+    [TestMethod]
     public async Task WhoIAmRequestTest()
     {
         if (service == null){
             Assert.Fail("Service client is not initialized.");
         }
         var result = service.ExecuteAsync(new Microsoft.Crm.Sdk.Messages.WhoAmIRequest());
+    }
+
+    [TestMethod]
+    public async Task Build_FetchXml_With_ValueOf_And_LinkEntity_Should_Be_Correct()
+    {
+        var entityLogicName = "contact";
+        var attributes = new string[] { "contactid", "fullname" };
+
+        var filter = new FilterBuilder("and")
+                        .ConditionValueOf("fullname", FetchOperator.NotEqual, "acct.name");
+
+        var link = new LinkEntityBuilder("account", "accountid", "parentcustomerid", "acct", LinkType.Outer)
+                        .Select("name");
+
+        var fetchXml = new FetchXmlBuilder()
+                            .Entity(entityLogicName)
+                            .Select(attributes)
+                            .Filter(filter)
+                            .LinkEntity(link)
+                            .Build();
+
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+        Assert.IsTrue(entityCollection.Entities.Count == 13);
+        entityCollection.ForEach(entity =>
+       {
+           var contactId = entity.GetAttributeValue<Guid>("contactid");
+           var fullname = entity.GetAttributeValue<string>("fullname");
+           var accountName = entity.GetAttributeValue<AliasedValue>("acct.name")?.Value;
+
+           Console.WriteLine($"ContactId: {contactId}, Fullname: {fullname}, Account Name: {accountName}");
+       });
+    }
+
+    [TestMethod]
+    public async Task Build_With_ConditionValueOf_Should_Contain_ValueOf()
+    {
+        var entityLogicName = "contact";
+        var attributes = new string[] { "firstname" };
+
+        var filter = new FilterBuilder()
+                        .ConditionValueOf("firstname", FetchOperator.NotEqual, "lastname");
+
+        var fetchXml = new FetchXmlBuilder()
+                            .Entity(entityLogicName)
+                            .Select(attributes)
+                            .Filter(filter)
+                            .Build();
+
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+        Assert.IsTrue(entityCollection.Entities.Count == 17);
     }
 
     [TestMethod]
@@ -86,6 +188,8 @@ public sealed class FetchXmlBuilderTest
         Assert.IsNotNull(entityCollection);
         Assert.IsTrue(entityCollection.Entities.Count > 0);
     }
+
+
 
     [TestMethod]
     public async Task AccountRepository_AndConditionInTest()

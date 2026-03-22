@@ -61,6 +61,9 @@ public enum LinkType
     Inner,
     Outer,
     Natural,
+    Any,
+    NotAny,
+    NotAll,
     Exists
 }
 
@@ -78,6 +81,12 @@ public static class LinkTypeExtensions
                 return "natural";
             case LinkType.Exists:
                 return "exists";
+            case LinkType.Any:
+                return "any";
+            case LinkType.NotAny:
+                return "not any";
+            case LinkType.NotAll:
+                return "not all";
             default:
                 return "inner";
         }
@@ -299,9 +308,18 @@ public class FilterBuilder
     private List<string> _conditions = new List<string>();
     private List<FilterBuilder> _subFilters = new List<FilterBuilder>();
 
+    // 新增：支持嵌套 link-entity
+    private List<LinkEntityBuilder> _linkEntities = new List<LinkEntityBuilder>(); 
+
     public FilterBuilder(string type = "and")
     {
         _type = type;
+    }
+
+    public FilterBuilder LinkEntity(LinkEntityBuilder link)
+    {
+        _linkEntities.Add(link);
+        return this;
     }
 
     // 支持带 entityname 的 In/NotIn（多值）条件：IEnumerable<string> 重载
@@ -347,6 +365,20 @@ public class FilterBuilder
         }
         sb.Append("</condition>");
         _conditions.Add(sb.ToString());
+        return this;
+    }
+
+    /// <summary>
+    /// 新增：支持 valueof 属性的条件，允许比较两个属性的值
+    /// </summary>
+    /// <param name="attribute"></param>
+    /// <param name="op"></param>
+    /// <param name="valueOfAttribute"></param>
+    /// <returns></returns>
+    public FilterBuilder ConditionValueOf(string attribute, FetchOperator op, string valueOfAttribute)
+    {
+        var vo = System.Security.SecurityElement.Escape(valueOfAttribute);
+        _conditions.Add($"<condition attribute='{attribute}' operator='{op.ToOperatorString()}' valueof='{vo}' />");
         return this;
     }
 
@@ -396,6 +428,8 @@ public class FilterBuilder
             sb.Append(cond);
         foreach (var sub in _subFilters)
             sb.Append(sub.Build());
+        foreach (var link in _linkEntities) // 新增：输出嵌套的 link-entity
+            sb.Append(link.Build());
         sb.Append("</filter>");
         return sb.ToString();
     }
