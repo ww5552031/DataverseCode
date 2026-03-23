@@ -64,11 +64,20 @@ public enum LinkType
     Any,
     NotAny,
     NotAll,
+    All,
     Exists
 }
 
 public static class LinkTypeExtensions
 {
+    /// <summary>
+    /// Any	在滤波元件中使用它。限制结果只能显示与关联实体中任何匹配行的父行。
+    /// Not-Any	在滤波元件中使用它。限制结果只能显示与关联实体中没有任何匹配行的父行。
+    /// Not-All 在筛选元素中使用此项。限制结果为连接实体中所有匹配行的父行。该链接类型等同于尽管名称相同。Any
+    /// All Use this within a filter element. Restricts results to parent rows where rows with matching column value exist in the link entity but none of those matching rows satisfy the additional filters defined for this link entity. You need to invert the additional filters to find parent rows where every matching link entity row satisfies some additional criteria.from
+    /// </summary>
+    /// <param name="linkType"></param>
+    /// <returns></returns>
     public static string ToLinkTypeString(this LinkType linkType)
     {
         switch (linkType)
@@ -87,6 +96,8 @@ public static class LinkTypeExtensions
                 return "not any";
             case LinkType.NotAll:
                 return "not all";
+            case LinkType.All:
+                return "all";
             default:
                 return "inner";
         }

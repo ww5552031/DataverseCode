@@ -24,6 +24,32 @@ public sealed class FetchXmlBuilderTest
         service = new ServiceClient(dataverseConnection);
     }
 
+   [TestMethod]
+    public async Task Build_FetchXml_With_LinkEntity_All_Filter_Should_Be_Correct()
+    {
+        var entityLogicName = "contact";
+        var attributes = new string[] { "fullname" };
+    
+        var linkFilter = new FilterBuilder("and")
+                            .Condition("name", FetchOperator.Equal, "Contoso");
+    
+        var link = new LinkEntityBuilder("account", "primarycontactid", "contactid", "account", LinkType.All)
+                        .Filter(linkFilter);
+    
+        var filter = new FilterBuilder("and")
+                        .LinkEntity(link);
+    
+        var fetchXml = new FetchXmlBuilder()
+                            .Entity(entityLogicName)
+                            .Select(attributes)
+                            .Filter(filter)
+                            .Build();
+    
+        var fetchExpression = new FetchExpression(fetchXml);
+        var entityCollection = await service!.RetrieveMultipleAsync(fetchExpression);
+        Assert.IsNotNull(entityCollection);
+    }
+
     [TestMethod]
     public async Task Build_FetchXml_NotAny_LinkEntity_In_Filter_Should_Be_Correct()
     {
