@@ -5,6 +5,9 @@
 /train.dataverse.comm/bin
 /WebResource/obj
 /WebResource/bin
+/train.plugin/obj
+/train.plugin/bin
+/train.plugin/.vscode
 /.vscode
 /.vs
 appsettings.json
