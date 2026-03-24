@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebResource", "WebResource\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "train.plugin", "train.plugin\train.plugin.csproj", "{0F844389-7DF9-4365-8DA3-A6E462E4DD65}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "train.sharedproject", "train.sharedproject\train.sharedproject.shproj", "{F10B6278-38FD-452C-AEF4-7B96C9DFF2EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E20CC38-12FE-4D86-A0BD-D589563AEBA7}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		train.sharedproject\train.sharedproject.projitems*{0f844389-7df9-4365-8da3-a6e462e4dd65}*SharedItemsImports = 5
+		train.sharedproject\train.sharedproject.projitems*{f10b6278-38fd-452c-aef4-7b96c9dff2ef}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

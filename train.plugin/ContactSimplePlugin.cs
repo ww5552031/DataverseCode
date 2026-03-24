@@ -26,7 +26,7 @@ namespace train.plugin
 
             var context = localPluginContext.PluginExecutionContext;
 
-            
+            localPluginContext.Trace("ContactSimplePlugin execution started.");
 
             // TODO: Implement your custom business logic
 

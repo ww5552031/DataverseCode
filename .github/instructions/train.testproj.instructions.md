@@ -1,7 +1,7 @@
 ---
 name: train.testproj.instructions
 description: "Project-level instructions for train.testproj（测试项目）。"
-applyTo: "train.testproj/**"
+applyTo: "**/train.testproj/**"
 ---
  
 简要说明：此项目包含单元测试，使用 MSTest 框架。

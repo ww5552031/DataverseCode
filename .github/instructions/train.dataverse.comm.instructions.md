@@ -1,7 +1,7 @@
 ---
 name: train.dataverse.comm.instructions
 description: "Project-level instructions for train.dataverse.comm (库)。"
-applyTo: "train.dataverse.comm/**"
+applyTo: "../../train.dataverse.comm/**"
 ---
  
 简要说明：此项目包含公用库代码，用于构建与与 Dataverse 数据访问相关的帮助程序和仓库。

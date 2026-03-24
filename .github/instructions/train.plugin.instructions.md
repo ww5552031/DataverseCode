@@ -1,7 +1,7 @@
 ---
 name: train.plugin
 description: "Project-level instructions for the train.plugin project: build, signing, deployment and agent prompts."
-applyTo: train.plugin/**
+applyTo: "***/train.plugin/**"
 ---
 
 # 简要说明

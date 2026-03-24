@@ -1,7 +1,7 @@
 ---
 name: WebResource.instructions
 description: "Project-level instructions for WebResource（Web 前端/静态资源）。"
-applyTo: "WebResource/**"
+applyTo: "**/WebResource/**"
 ---
  
 简要说明：包含前端静态资源、WebHost 和配置，用于开发/上传 WebResource 内容。
